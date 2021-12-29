@@ -19,7 +19,7 @@
 <nav>
     <div class="container-fluid border-bottom border-secondary">
         <div class="row navbar navbar-light bg-primary">
-            <div class="col-12 text-center ">
+            <div class="col-12 text-center">
                 <h1>Weather Dashboard</h1>
             </div>
         </div>
@@ -27,7 +27,7 @@
 </nav>
 
 <div class="row">
-    <div class="col-3 p-2 bg-light">
+    <div class="col-3 pb-2 bg-light">
         <div class="row mx-auto">
             <div class="col-12">
                 <h3>City Search:</h3>
@@ -35,10 +35,51 @@
         </div>
 
         <div class="row">
-            
+            <div class="col-12">
+                <div class="input-group">
+                    <input id="cityEntry" class="form-control ml-2" type="text" placeholder="Enter city..." aria-label="Enter city">
+                    <div class ="col-12">
+                    <button type="button" id="searchButton" class="btn btn-primary btn-block mt-2"></i>Search</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-2 row">
+            <div class="col-12">
+                <h5 class="text-center border-top border-primary mt-1 ml-2">Searched Cities</h5>
+                <ul class="list-group mt-1" id="appendList">
+
+                    <!-- This ul needs to have cities appended -->
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-9">
+        <div class="row">
+            <div class="col-12">
+                <h5>Display Searched City Here</h5>
+                <!-- This <div> is where I append the searched city -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h5>5-day Forecast</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <h5>5-day forecast info goes here at the bottom</h5>
+            <!-- This <div> is where I append the 5-day forecast -->
         </div>
     </div>
 </div>
 </main>
+
+<script src="assets/script.js"></script>
 </body>
 </html>
