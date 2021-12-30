@@ -1,3 +1,7 @@
 * {
     font-family: 'Oxygen', sans-serif;
 }
+
+#listedCities {
+    background-color: rgb(26, 26, 194);
+}
