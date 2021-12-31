@@ -109,18 +109,18 @@ function citySearch(city) {
 
 searchButtonEl.on("click", function(event){
     event.preventDefault();
-    var city = cityEntryEl.val().trim().replace(" ", "+");
+    var city = cityEntryEl.val().trim().replace(" ", "+"); //for two-worded cities
     citySearch(city);
     getWeather(city);
     if(!searchHistory.includes(city)) {
         searchHistory.push(city);
-        var searchedCity = $("<li></li>");
-        searchedCity.addClass("listedCities");
+        var searchedCity = $("<li>");
+        searchedCity.text(city);
         appendListEl.append(searchedCity);
 
     };
 
-    localStorage.setItem("searchedCity", JSON.stringify(searchHistory));
+    localStorage.setItem("City", JSON.stringify(searchHistory));
     console.log(searchHistory);
 })
 
