@@ -59,23 +59,20 @@ function getWeather(city) {
       }).then(function (uviResponse) {
         console.log(uviResponse);
         var uvi = uviResponse.current.uvi
-        var uviColor = $(`
-    
-            <span id="uvIndexColor" class="px-2 py-2 rounded"></span>
         
-    `);
-        $("#UV-index").text(uvi); //Add colors using if/else statement
-        if(uvi <= 2) {
-        
+        $("#UV-index").text("UV Index: " + uvi); //Add colors using if/else statement
+        console.log(uvi);
+        if(uvi >= 0 && uvi <= 2) {
+        $("#UV-index").css("background-color", "green")
         }
         else if (uvi <= 5) {
-
+            $("#UV-index").css("background-color", "yellow")
         } else if (uvi <= 7) {
-
+            $("#UV-index").css("background-color", "orange")
         } else if (uvi <= 10) {
-
+            $("#UV-index").css("background-color", "red")
         } else {
-
+            $("#UV-index").css("background-color", "purple")
         }
       })
 
@@ -102,8 +99,7 @@ var displayWeather = function (para1, para2) {
 
 function citySearch(city) {
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
-    // cityEntryEl.val().replace(" ", "_");
-    console.log(queryURL); //works but not with two-word cities
+    console.log(queryURL); 
     
 }
 
