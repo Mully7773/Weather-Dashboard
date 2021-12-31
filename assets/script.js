@@ -114,7 +114,9 @@ searchButtonEl.on("click", function(event){
     getWeather(city);
     if(!searchHistory.includes(city)) {
         searchHistory.push(city);
-        var searchedCity = $("<li>");
+        var searchedCity = $("<button>");
+        searchedCity.addClass("btn btn-secondary btn-block mt-2");
+        searchedCity.attr("id", "searchedCityBtn")
         searchedCity.text(city);
         appendListEl.append(searchedCity);
 
@@ -123,4 +125,18 @@ searchButtonEl.on("click", function(event){
     localStorage.setItem("City", JSON.stringify(searchHistory));
     console.log(searchHistory);
 })
+
+// $("#searchedCityBtn").on("click", function() {
+//     // var thisCity = $(this).text();
+//     console.log("hello")
+// })
+
+$(document).on("click", "#searchedCityBtn", function() {
+    var thisCity = $(this).text();
+    getWeather(thisCity);
+})
+
+
+
+
 
