@@ -1,4 +1,4 @@
-var date = moment().format('LL');
+var today = moment().format('LL');
 
 var apiKey = 'b60a374c2ea7fecdf3917b7b47f49eb2';
 
@@ -10,35 +10,80 @@ var mainDisplayEl = $("#mainDisplay");
 var cityTempEl = $("#cityTemp");
 var cityInfoEl = $("#cityInfo");
 var fiveDayForecastEl = $("#fiveDayForecast");
+var cityNameEl = $("#cityName");
 
 var searchHistory = [];
-
-var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityEntryEl + "&units=imperial" + "&appid=" + apiKey;
 
 // console.log(queryURL);
 
 // Display City Function
 function getWeather(city) {
 
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityEntryEl + "&appid=" + apiKey;
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey;
 
     $.ajax({
         url: queryURL,
         method: 'GET',
       }).then(function (response) {
         console.log(response);
-        console.log(response.name)
+        
+        // WHEN I view current weather conditions for that city
+        // THEN I am presented with the city name
+        // the date
+        // an icon representation of weather conditions
+        // the temperature
+        // the humidity
+        // the wind speed
+    var icon = response.weather[0].icon
+    var iconUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+    cityNameEl.html(response.name + " " + today + "<img src=" + iconUrl + ">");
 
-        if (response.ok) {
-            response.json().then(function(data) {
-                displayWeather(data, cityEntryEl); 
-            });
-        } else {
-            alert('Error')
+    
+    
+    var temp = $("#temperature").text(response.main.temp + " °F");
+    // Math.floor(temp);
+    // console.log(temp)
+    $("#wind-speed").text(response.wind.speed + " MPH");
+    $("#humidity").text(response.main.humidity + "%");
+    
+    // var UvIndex = ???
+
+    var lon = response.coord.lon;
+    var lat = response.coord.lat;
+
+    var uviQueryUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + '&lon=' + lon + "&exclude=minutely,hourly&appid=" + apiKey
+    
+    $.ajax({
+        url: uviQueryUrl,
+        method: 'GET',
+      }).then(function (uviResponse) {
+        console.log(uviResponse);
+        var uvi = uviResponse.current.uvi
+        var uviColor = $(`
+    
+            <span id="uvIndexColor" class="px-2 py-2 rounded"></span>
+        
+    `);
+        $("#UV-index").text(uvi); //Add colors using if/else statement
+        if(uvi <= 2) {
+        
         }
+        else if (uvi <= 5) {
+
+        } else if (uvi <= 7) {
+
+        } else if (uvi <= 10) {
+
+        } else {
+
+        }
+      })
+
+
       })
       .catch(function(error) {
           alert('Unable to connect to openweathermap');
+          console.log(error)
       });
 };
 
@@ -47,23 +92,29 @@ var displayWeather = function (para1, para2) {
         mainDisplayEl.text ="No city found"
         return;
     }
-    var temperature = main.temp;
-    var windSpeed = wind.speed;
-    var humidity = main.humidity;
-    // var UvIndex = ???
+    
 }
 
-function citySearch() {
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityEntryEl.val().trim() + "&units=imperial" + "&appid=" + apiKey;
-    // cityEntryEl.val(" ").replaceWith("_");
+
+
+
+
+
+function citySearch(city) {
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
+    // cityEntryEl.val().replace(" ", "_");
     console.log(queryURL); //works but not with two-word cities
     
 }
 
 
+
+
+
 searchButtonEl.on("click", function(event){
     event.preventDefault();
-    citySearch();
+    var city = cityEntryEl.val().trim().replace(" ", "+");
+    citySearch(city);
     getWeather(city);
     if(!searchHistory.includes(city)) {
         searchHistory.push(city);
@@ -76,5 +127,4 @@ searchButtonEl.on("click", function(event){
     localStorage.setItem("searchedCity", JSON.stringify(searchHistory));
     console.log(searchHistory);
 })
-
 
