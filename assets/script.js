@@ -46,7 +46,7 @@ function getWeather(city) {
     $("#wind-speed").text(response.wind.speed + " MPH");
     $("#humidity").text(response.main.humidity + "%");
     
-    // var UvIndex = ???
+    
 
     var lon = response.coord.lon;
     var lat = response.coord.lat;
@@ -84,14 +84,6 @@ function getWeather(city) {
       });
 };
 
-var displayWeather = function (para1, para2) {
-    if (para1.length === 0) {
-        mainDisplayEl.text ="No city found"
-        return;
-    }
-    
-}
-
 
 
 
@@ -100,8 +92,77 @@ var displayWeather = function (para1, para2) {
 function citySearch(city) {
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
     console.log(queryURL); 
-    
 }
+
+
+
+//Five-day
+// var fiveDayForecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + "London" + "&units=imperial" + "&appid=" + apiKey;
+// console.log(fiveDayForecastURL)
+
+function fiveDayForecast(city) {
+    var fiveDayForecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=" + apiKey;
+    console.log(fiveDayForecastURL)
+
+    
+
+
+
+    $.ajax({
+        url: fiveDayForecastURL,
+        method: 'GET',
+      }).then(function (fiveDayResponse) {
+          console.log(fiveDayResponse);
+
+        //   var weatherItems = fiveDayResponse.list;
+          for (let i = 1; i < 6; i++) {
+            // var dailyForecast = weatherItems[i];
+
+            
+            
+
+              var info = {
+                  date: fiveDayResponse.list[i].dt,
+                  icon: fiveDayResponse.list[i].weather.icon,
+                  temp: fiveDayResponse.list[i].main.temp,
+                  humidity: fiveDayResponse.list[i].main.humidity
+              };
+              var todayDate = moment.unix(info.date).format("MM/DD/YYYY");
+              console.log(todayDate)
+              
+              
+
+            //   var newCards = $("<div>").addClass("pl-3")
+
+        
+
+        fiveDayForecastEl.append("<div class='pl-3'>" + "<div class='card pl-1 pt-2 ml-3 mb-4 mt-1 bg-primary text-light' style='width: 200px'>" + "<div class='card-body'>" + "<h5>" + todayDate + "</h5>" + "Temp:" + "<p>" + info.temp + "°F" + "</p>" + "Humidity: " + "<p>" + info.humidity + "\%" + "</p>" + "</div>" + "</div>" + "</div>")
+
+        
+
+
+
+        // $("#finalFive").append(newCards);
+            //   fiveDayForecastEl.addClass("card bg-secondary text-light m-2");
+
+
+
+            //   var newDay = new Date(fiveDayResponse.daily[i].dt * 1000);
+            //   newDay = newDay.toLocaleDateString("en-US");
+            //   console.log(newDay);
+          }
+        // $("#fiveDayForecast").text(fiveDayResponse.list[0].dt);
+        // var newDay = new Date(fiveDayResponse.daily[i].dt * 1000);
+        // newDay = newDay.toLocaleDateString("en-US");
+        // console.log(newDay);
+      });
+    }
+
+    // var newDay = new Date(data.daily[i].dt * 1000);
+    //     newDay = newDay.toLocaleDateString("en-US");
+    //     console.log(newDay);
+
+    
 
 
 
@@ -112,6 +173,7 @@ searchButtonEl.on("click", function(event){
     var city = cityEntryEl.val().trim().replace(" ", "+"); //for two-worded cities
     citySearch(city);
     getWeather(city);
+    fiveDayForecast(city);
     if(!searchHistory.includes(city)) {
         searchHistory.push(city);
         var searchedCity = $("<button>");
@@ -131,6 +193,7 @@ searchButtonEl.on("click", function(event){
 //     console.log("hello")
 // })
 
+//Click to get previous search values
 $(document).on("click", "#searchedCityBtn", function() {
     var thisCity = $(this).text();
     getWeather(thisCity);
