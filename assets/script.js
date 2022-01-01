@@ -120,15 +120,18 @@ function fiveDayForecast(city) {
 
             
             
+        
 
               var info = {
                   date: fiveDayResponse.list[i].dt,
-                  icon: fiveDayResponse.list[i].weather.icon,
+                  icon: fiveDayResponse.list[i].weather[0].icon,
                   temp: fiveDayResponse.list[i].main.temp,
                   humidity: fiveDayResponse.list[i].main.humidity
               };
               var todayDate = moment.unix(info.date).format("MM/DD/YYYY");
               console.log(todayDate)
+
+              var iconURL = "https://openweathermap.org/img/wn/" + info.icon + "@2x.png";
               
               
 
@@ -136,7 +139,7 @@ function fiveDayForecast(city) {
 
         
 
-        fiveDayForecastEl.append("<div class='pl-3'>" + "<div class='card pl-1 pt-2 ml-3 mb-4 mt-1 bg-primary text-light' style='width: 200px'>" + "<div class='card-body'>" + "<h5>" + todayDate + "</h5>" + "Temp:" + "<p>" + info.temp + "°F" + "</p>" + "Humidity: " + "<p>" + info.humidity + "\%" + "</p>" + "</div>" + "</div>" + "</div>")
+        fiveDayForecastEl.append("<div class='pl-3'>" + "<div class='card pl-1 pt-2 ml-3 mb-4 mt-1 bg-primary text-light' style='width: 200px'>" + "<div class='card-body'>" + "<h5>" + todayDate + "<img src=" + iconURL + ">" + "</h5>" + "Temp:" + "<p>" + info.temp + "°F" + "</p>" + "Humidity: " + "<p>" + info.humidity + "\%" + "</p>" + "</div>" + "</div>" + "</div>")
 
         
 
