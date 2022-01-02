@@ -2,13 +2,11 @@ var today = moment().format('LL');
 
 var apiKey = 'b60a374c2ea7fecdf3917b7b47f49eb2';
 
-var searchResultEl = $("#searchResult");
+
 var cityEntryEl = $("#cityEntry");
 var searchButtonEl = $("#searchButton");
 var appendListEl = $("#appendList");
 var mainDisplayEl = $("#mainDisplay");
-var cityTempEl = $("#cityTemp");
-var cityInfoEl = $("#cityInfo");
 var fiveDayForecastEl = $("#fiveDayForecast");
 var cityNameEl = $("#cityName");
 
@@ -34,17 +32,18 @@ function getWeather(city) {
         // the temperature
         // the humidity
         // the wind speed
+
     var icon = response.weather[0].icon
     var iconUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
     cityNameEl.html(response.name + " " + today + "<img src=" + iconUrl + ">");
 
     
     
-    var temp = $("#temperature").text(response.main.temp + " °F");
-    // Math.floor(temp);
+    var temp = $("#temperature").text("Temperature: " + response.main.temp + " °F").css("font-size", "20px");
+    // Math.floor(temp); If less exact values are desired.
     // console.log(temp)
-    $("#wind-speed").text(response.wind.speed + " MPH");
-    $("#humidity").text(response.main.humidity + "%");
+    $("#wind-speed").text("Wind Speed: " + response.wind.speed + " MPH").css("font-size", "20px");
+    $("#humidity").text("Humidity: " + response.main.humidity + "%").css("font-size", "20px");
     
     
 
@@ -60,7 +59,7 @@ function getWeather(city) {
         console.log(uviResponse);
         var uvi = uviResponse.current.uvi
         
-        $("#UV-index").text("UV Index: " + uvi); //Add colors using if/else statement
+        $("#UV-index").text("UV Index: " + uvi).css("font-size", "20px"); //Add colors using if/else statement
         console.log(uvi);
         if(uvi >= 0 && uvi <= 2) {
         $("#UV-index").css("background-color", "green")
@@ -86,9 +85,6 @@ function getWeather(city) {
 
 
 
-
-
-
 function citySearch(city) {
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
     console.log(queryURL); 
@@ -97,15 +93,11 @@ function citySearch(city) {
 
 
 //Five-day
-// var fiveDayForecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + "London" + "&units=imperial" + "&appid=" + apiKey;
-// console.log(fiveDayForecastURL)
-
 function fiveDayForecast(city) {
     var fiveDayForecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=" + apiKey;
     console.log(fiveDayForecastURL)
 
-    
-
+    fiveDayForecastEl.empty(); // Used to empty the container upon new searches
 
 
     $.ajax({
@@ -114,13 +106,11 @@ function fiveDayForecast(city) {
       }).then(function (fiveDayResponse) {
           console.log(fiveDayResponse);
 
+        $("#fiveDayTitle").text("Your 5-day Forecast:");
         //   var weatherItems = fiveDayResponse.list;
           for (let i = 1; i < 6; i++) {
             // var dailyForecast = weatherItems[i];
 
-            
-            
-        
 
               var info = {
                   date: fiveDayResponse.list[i].dt,
@@ -132,44 +122,15 @@ function fiveDayForecast(city) {
               console.log(todayDate)
 
               var iconURL = "https://openweathermap.org/img/wn/" + info.icon + "@2x.png";
-              
-              
-
-            //   var newCards = $("<div>").addClass("pl-3")
 
         
 
-        fiveDayForecastEl.append("<div class='pl-3'>" + "<div class='card pl-1 pt-2 ml-3 mb-4 mt-1 bg-primary text-light' style='width: 200px'>" + "<div class='card-body'>" + "<h5>" + todayDate + "<img src=" + iconURL + ">" + "</h5>" + "Temp:" + "<p>" + info.temp + "°F" + "</p>" + "Humidity: " + "<p>" + info.humidity + "\%" + "</p>" + "</div>" + "</div>" + "</div>")
+        fiveDayForecastEl.append("<div class='pl-3'>" + "<div class='card shadow pl-1 pt-2 ml-2 mb-4 mt-1 bg-primary text-light' style='width: 200px'>" + "<div class='card-body'>" + "<h5>" + todayDate + "<img src=" + iconURL + ">" + "</h5>" + "Temp:" + "<p>" + info.temp + "°F" + "</p>" + "Humidity: " + "<p>" + info.humidity + "\%" + "</p>" + "</div>" + "</div>" + "</div>")
 
-        
-
-
-
-        // $("#finalFive").append(newCards);
-            //   fiveDayForecastEl.addClass("card bg-secondary text-light m-2");
-
-
-
-            //   var newDay = new Date(fiveDayResponse.daily[i].dt * 1000);
-            //   newDay = newDay.toLocaleDateString("en-US");
-            //   console.log(newDay);
           }
-        // $("#fiveDayForecast").text(fiveDayResponse.list[0].dt);
-        // var newDay = new Date(fiveDayResponse.daily[i].dt * 1000);
-        // newDay = newDay.toLocaleDateString("en-US");
-        // console.log(newDay);
+        
       });
     }
-
-    // var newDay = new Date(data.daily[i].dt * 1000);
-    //     newDay = newDay.toLocaleDateString("en-US");
-    //     console.log(newDay);
-
-    
-
-
-
-
 
 searchButtonEl.on("click", function(event){
     event.preventDefault();
@@ -191,18 +152,10 @@ searchButtonEl.on("click", function(event){
     console.log(searchHistory);
 })
 
-// $("#searchedCityBtn").on("click", function() {
-//     // var thisCity = $(this).text();
-//     console.log("hello")
-// })
 
 //Click to get previous search values
 $(document).on("click", "#searchedCityBtn", function() {
     var thisCity = $(this).text();
     getWeather(thisCity);
+    fiveDayForecast(thisCity);
 })
-
-
-
-
-
