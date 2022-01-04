@@ -51,7 +51,7 @@ function getWeather(city) {
     var lat = response.coord.lat;
 
     var uviQueryUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + '&lon=' + lon + "&exclude=minutely,hourly&appid=" + apiKey
-    
+    console.log(uviQueryUrl)
     $.ajax({
         url: uviQueryUrl,
         method: 'GET',
@@ -95,7 +95,8 @@ function citySearch(city) {
 //Five-day
 function fiveDayForecast(city) {
     var fiveDayForecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=" + apiKey;
-    console.log(fiveDayForecastURL)
+
+
 
     fiveDayForecastEl.empty(); // Used to empty the container upon new searches
 
@@ -108,24 +109,27 @@ function fiveDayForecast(city) {
 
         $("#fiveDayTitle").text("Your 5-day Forecast:");
         //   var weatherItems = fiveDayResponse.list;
-          for (let i = 1; i < 6; i++) {
+          for (let i = 0; i !=  fiveDayResponse.list.length; i+=8) {
             // var dailyForecast = weatherItems[i];
 
 
               var info = {
-                  date: fiveDayResponse.list[i].dt,
+                  date: fiveDayResponse.list[i].dt_txt,
                   icon: fiveDayResponse.list[i].weather[0].icon,
                   temp: fiveDayResponse.list[i].main.temp,
                   humidity: fiveDayResponse.list[i].main.humidity
               };
-              var todayDate = moment.unix(info.date).format("MM/DD/YYYY");
-              console.log(todayDate)
+              var dateString = info.date;
+              var finalDate = dateString.substring(0, 10);
+
+            //   var todayDate = moment.unix(info.date).format("MM/DD/YYYY");
+            //   console.log(todayDate)
 
               var iconURL = "https://openweathermap.org/img/wn/" + info.icon + "@2x.png";
 
         
 
-        fiveDayForecastEl.append("<div class='pl-3'>" + "<div class='card shadow pl-1 pt-2 ml-2 mb-4 mt-1 bg-primary text-light' style='width: 200px'>" + "<div class='card-body'>" + "<h5>" + todayDate + "<img src=" + iconURL + ">" + "</h5>" + "Temp:" + "<p>" + info.temp + "°F" + "</p>" + "Humidity: " + "<p>" + info.humidity + "\%" + "</p>" + "</div>" + "</div>" + "</div>")
+        fiveDayForecastEl.append("<div class='pl-3'>" + "<div class='card shadow pl-1 pt-2 ml-2 mb-4 mt-1 bg-primary text-light' style='width: 200px'>" + "<div class='card-body'>" + "<h5>" + finalDate + "<img src=" + iconURL + ">" + "</h5>" + "Temp:" + "<p>" + info.temp + "°F" + "</p>" + "Humidity: " + "<p>" + info.humidity + "\%" + "</p>" + "</div>" + "</div>" + "</div>")
 
           }
         
