@@ -18,7 +18,12 @@ var searchHistory = [];
 function getWeather(city) {
 
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey;
-
+    // fetch(queryURL)
+    // .then(function (response){
+    //     return response.json();
+    // }) .then(function (data) {
+        
+    // })
     $.ajax({
         url: queryURL,
         method: 'GET',
@@ -77,10 +82,7 @@ function getWeather(city) {
 
 
       })
-      .catch(function(error) {
-          alert('Unable to connect to openweathermap');
-          console.log(error)
-      });
+      
 };
 
 
