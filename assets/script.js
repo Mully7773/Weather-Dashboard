@@ -17,7 +17,7 @@ var searchHistory = [];
 // Display City Function
 function getWeather(city) {
 
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey;
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey;
     // fetch(queryURL)
     // .then(function (response){
     //     return response.json();
@@ -39,7 +39,7 @@ function getWeather(city) {
         // the wind speed
 
     var icon = response.weather[0].icon
-    var iconUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+    var iconUrl = "https://openweathermap.org/img/wn/" + icon + "@2x.png";
     cityNameEl.html(response.name + " " + today + "<img src=" + iconUrl + ">");
 
     
@@ -82,13 +82,16 @@ function getWeather(city) {
 
 
       })
-      
+      .catch(function(error) {
+          alert('Unable to connect to openweathermap');
+          console.log(error)
+      });
 };
 
 
 
 function citySearch(city) {
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
     console.log(queryURL); 
 }
 
@@ -96,7 +99,7 @@ function citySearch(city) {
 
 //Five-day
 function fiveDayForecast(city) {
-    var fiveDayForecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=" + apiKey;
+    var fiveDayForecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=" + apiKey;
 
 
 
